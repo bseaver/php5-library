@@ -17,22 +17,22 @@
 
         function setBookId($book_id)
         {
-            // $this->book_id = (int) $book_id;
+            $this->book_id = (int) $book_id;
         }
 
         function setBookCondition($book_condition)
         {
-            // $this->book_condition = (string) $book_condition;
+            $this->book_condition = (string) $book_condition;
         }
 
         function setComment($comment)
         {
-            // $this->comment = (string) $comment;
+            $this->comment = (string) $comment;
         }
 
         function setId($id)
         {
-            // $this->id = (int) $id;
+            $this->id = (int) $id;
         }
 
         function getBookId()
