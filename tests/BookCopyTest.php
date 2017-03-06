@@ -37,5 +37,29 @@
                 $book_copy2->getComment()]
             );
         }
+
+        function test_BookCopy_save_deleteAll_getAll()
+        {
+            // Arrange
+            $bookcopy1 = new BookCopy(2, 1, 'checked out');
+            $bookcopy2 = new BookCopy(2, 1, "check's out");
+
+            // Act
+            $bookcopy1->save();
+            $bookcopy2->save();
+
+            BookCopy::deleteSome('all');
+
+            $bookcopy3 = new BookCopy(4, 4, "check's out");
+            $bookcopy4 = new BookCopy(4, 3, 'checked out');
+            $bookcopy3->save();
+            $bookcopy4->save();
+
+            // Assert
+            $this->assertEquals(
+                [$bookcopy3, $bookcopy4],
+                BookCopy::getSome('all')
+            );
+        }
     }
 ?>
