@@ -68,21 +68,24 @@
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
-        function update($name)
+        function update($book_id, $book_condition, $comment)
         {
-            // $this->setName($name);
-            // $statement_handle = $GLOBALS['DB']->prepare(
-            //     "UPDATE book_copies SET
-            //         book_id = :book_id,
-            //         comment = :comment,
-            //         book_condition = :book_condition
-            //     WHERE id = :id ;"
-            // );
-            // $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
-            // $statement_handle->bindValue(':book_id', $this->getBookId(), PDO::PARAM_INT);
-            // $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
-            // $statement_handle->bindValue(':book_condition', $this->getBookCondition(), PDO::PARAM_INT);
-            // $statement_handle->execute();
+            $this->setBookId($book_id);
+            $this->setBookCondition($book_condition);
+            $this->setComment($comment);
+
+            $statement_handle = $GLOBALS['DB']->prepare(
+                "UPDATE book_copies SET
+                    book_id = :book_id,
+                    comment = :comment,
+                    book_condition = :book_condition
+                WHERE id = :id ;"
+            );
+            $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+            $statement_handle->bindValue(':book_id', $this->getBookId(), PDO::PARAM_INT);
+            $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
+            $statement_handle->bindValue(':book_condition', $this->getBookCondition(), PDO::PARAM_INT);
+            $statement_handle->execute();
         }
 
         static function getSome($search_selector, $search_argument = '')

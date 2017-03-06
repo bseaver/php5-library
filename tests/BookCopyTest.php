@@ -15,7 +15,7 @@
     {
         protected function tearDown()
         {
-            // BookCopy::deleteSome('all');
+            BookCopy::deleteSome('all');
         }
 
         function test_BookCopy_get_set_construct()
