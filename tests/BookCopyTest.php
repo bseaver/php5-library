@@ -61,5 +61,24 @@
                 BookCopy::getSome('all')
             );
         }
+
+        function test_BookCopy_update()
+        {
+            // Arrange
+            $bookcopy1 = new BookCopy(2, 1, 'checked out');
+            $bookcopy2 = new BookCopy(2, 1, "check's out");
+            $bookcopy1->save();
+            $bookcopy2->save();
+
+            // Act
+            $bookcopy1->update($bookcopy1->getBookId(), 4, "'hello'");
+            $result = BookCopy::getSome('all');
+
+            // Assert
+            $this->assertEquals([$bookcopy1, $bookcopy2], $result);
+            $this->assertEquals(2, $result[0]->getBookId());
+            $this->assertEquals(4, $result[0]->getBookCondition());
+            $this->assertEquals("'hello'", $result[0]->getComment());
+        }
     }
 ?>
