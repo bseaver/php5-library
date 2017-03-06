@@ -80,5 +80,28 @@
             $this->assertEquals(4, $result[0]->getBookCondition());
             $this->assertEquals("'hello'", $result[0]->getComment());
         }
+
+        function test_BookCopy_deleteSome_id()
+        {
+            // Arrange
+            $bookcopy1 = new BookCopy(2, 1, 'checked out');
+            $bookcopy2 = new BookCopy(2, 1, "check's out");
+            $bookcopy3 = new BookCopy(4, 4, "check's out");
+            $bookcopy4 = new BookCopy(4, 3, 'checked out');
+            $bookcopy1->save();
+            $bookcopy2->save();
+            $bookcopy3->save();
+            $bookcopy4->save();
+
+            // Act
+            BookCopy::deleteSome('id', $bookcopy3->getId());
+            BookCopy::deleteSome('id', $bookcopy2->getId());
+
+            // Assert
+            $this->assertEquals(
+                [$bookcopy1, $bookcopy4],
+                BookCopy::getSome('all')
+            );
+        }
     }
 ?>
