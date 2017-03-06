@@ -57,15 +57,15 @@
 
         function save()
         {
-            // $statement_handle = $GLOBALS['DB']->prepare(
-            //     "INSERT INTO book_copies (book_id, comment, book_condition) VALUES
-            //     (:book_id, :comment, :book_condition);"
-            // );
-            // $statement_handle->bindValue(':book_id', $this->getBookId(), PDO::PARAM_INT);
-            // $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
-            // $statement_handle->bindValue(':book_condition', $this->getBookCondition(), PDO::PARAM_INT);
-            // $statement_handle->execute();
-            // $this->id = $GLOBALS['DB']->lastInsertId();
+            $statement_handle = $GLOBALS['DB']->prepare(
+                "INSERT INTO book_copies (book_id, comment, book_condition) VALUES
+                (:book_id, :comment, :book_condition);"
+            );
+            $statement_handle->bindValue(':book_id', $this->getBookId(), PDO::PARAM_INT);
+            $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
+            $statement_handle->bindValue(':book_condition', $this->getBookCondition(), PDO::PARAM_INT);
+            $statement_handle->execute();
+            $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
         function update($name)
@@ -87,56 +87,56 @@
 
         static function getSome($search_selector, $search_argument = '')
         {
-            // $statement_handle = null;
-            //
-            // if ($search_selector == 'id') {
-            //     $statement_handle = $GLOBALS['DB']->prepare(
-            //         "SELECT * FROM book_copies WHERE id = :search_argument;"
-            //     );
-            //     $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
-            // }
-            //
-            // if ($search_selector == 'all') {
-            //     $statement_handle = $GLOBALS['DB']->prepare(
-            //         "SELECT * FROM book_copies ORDER BY book_id, id;"
-            //     );
-            // }
-            //
-            // $output = array();
-            // if ($statement_handle) {
-            //     $statement_handle->execute();
-            //     $results = $statement_handle->fetchAll();
-            //     foreach ($results as $result) {
-            //         $book_copy = new BookCopy(
-            //             $result['book_id'],
-            //             $result['book_condition'],
-            //             $result['comment'],
-            //             $result['id']
-            //         );
-            //         array_push($output, $book_copy);
-            //     }
-            // }
-            // return $output;
+            $statement_handle = null;
+
+            if ($search_selector == 'id') {
+                $statement_handle = $GLOBALS['DB']->prepare(
+                    "SELECT * FROM book_copies WHERE id = :search_argument;"
+                );
+                $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+            }
+
+            if ($search_selector == 'all') {
+                $statement_handle = $GLOBALS['DB']->prepare(
+                    "SELECT * FROM book_copies ORDER BY book_id, id;"
+                );
+            }
+
+            $output = array();
+            if ($statement_handle) {
+                $statement_handle->execute();
+                $results = $statement_handle->fetchAll();
+                foreach ($results as $result) {
+                    $book_copy = new BookCopy(
+                        $result['book_id'],
+                        $result['book_condition'],
+                        $result['comment'],
+                        $result['id']
+                    );
+                    array_push($output, $book_copy);
+                }
+            }
+            return $output;
         }
 
         static function deleteSome($search_selector, $search_argument = 0)
         {
-            // $statement_handle = null;
-            //
-            // if ($search_selector == 'id') {
-            //     $statement_handle = $GLOBALS['DB']->prepare(
-            //         "DELETE FROM book_copies WHERE id = :search_argument;"
-            //     );
-            //     $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
-            // }
-            //
-            // if ($search_selector == 'all') {
-            //     $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM book_copies;");
-            // }
-            //
-            // if ($statement_handle) {
-            //     $statement_handle->execute();
-            // }
+            $statement_handle = null;
+
+            if ($search_selector == 'id') {
+                $statement_handle = $GLOBALS['DB']->prepare(
+                    "DELETE FROM book_copies WHERE id = :search_argument;"
+                );
+                $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+            }
+
+            if ($search_selector == 'all') {
+                $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM book_copies;");
+            }
+
+            if ($statement_handle) {
+                $statement_handle->execute();
+            }
         }
 
     }

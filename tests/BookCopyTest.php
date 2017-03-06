@@ -38,7 +38,7 @@
             );
         }
 
-        function test_BookCopy_save_deleteAll_getAll()
+        function test_BookCopy_save_deleteSome_all_getSome_all()
         {
             // Arrange
             $bookcopy1 = new BookCopy(2, 1, 'checked out');
