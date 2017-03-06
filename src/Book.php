@@ -140,5 +140,15 @@
           }
       }
 
+      function updateName($new_name)
+      {
+        $GLOBALS['DB']->exec("UPDATE books SET name = '{$new_name}' WHERE id = {$this->getId()};");
+        $this->setTitle($new_name);
+      }
+      function updateSynopsis($new_synopsis)
+      {
+        $GLOBALS['DB']->exec("UPDATE books SET synopsis = '{$new_synopsis}' WHERE id = {$this->getId()};");
+        $this->setSynopsis($new_synopsis);
+      }
   }
 ?>
