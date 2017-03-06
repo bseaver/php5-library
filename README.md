@@ -82,7 +82,7 @@ CREATE TABLE genre (id SERIAL PRIMARY KEY, genre_name varchar(255));
 
 DROP TABLE IF EXISTS `book_copies`;
 
-CREATE TABLE brands (id SERIAL PRIMARY KEY, name varchar(255));
+create table books(title varchar(255), publish_date date, synopsis text, genre_id bigint, id serial primary key);
 
 DROP TABLE IF EXISTS `brands_stores`;
 
