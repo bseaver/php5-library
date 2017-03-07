@@ -103,5 +103,28 @@
                 BookCopy::getSome('all')
             );
         }
+
+        function test_BookCopy_getSome_id()
+        {
+            // Arrange
+            $bookcopy1 = new BookCopy(2, 1, 'checked out');
+            $bookcopy2 = new BookCopy(2, 1, "check's out");
+            $bookcopy3 = new BookCopy(4, 4, "check's out");
+            $bookcopy4 = new BookCopy(4, 3, 'checked out');
+            $bookcopy1->save();
+            $bookcopy2->save();
+            $bookcopy3->save();
+            $bookcopy4->save();
+
+            // Act
+            $get3 = BookCopy::getSome('id', $bookcopy3->getId());
+            $get2 = BookCopy::getSome('id', $bookcopy2->getId());
+
+            // Assert
+            $this->assertEquals(
+                [$bookcopy3, $bookcopy2],
+                [$get3[0], $get2[0]]
+            );
+        }
     }
 ?>
