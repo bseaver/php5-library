@@ -25,42 +25,42 @@
 
         function setBookCopyId($book_copy_id)
         {
-            // $this->book_copy_id = (int) $book_copy_id;
+            $this->book_copy_id = (int) $book_copy_id;
         }
 
         function setPatronId($patron_id)
         {
-            // $this->patron_id = (int) $patron_id;
+            $this->patron_id = (int) $patron_id;
         }
 
         function setCheckoutDate($checkout_date)
         {
-            // $this->checkout_date = $checkout_date;
+            $this->checkout_date = $checkout_date;
         }
 
         function setDueDate($due_date)
         {
-            // $this->due_date = $due_date;
+            $this->due_date = $due_date;
         }
 
         function setReturnedDate($returned_date)
         {
-            // $this->returned_date = $returned_date;
+            $this->returned_date = $returned_date;
         }
 
         function setComment($comment)
         {
-            // $this->comment = (string) $comment;
+            $this->comment = (string) $comment;
         }
 
         function setStillOut($still_out)
         {
-            // $this->still_out = (int) $still_out;
+            $this->still_out = (int) $still_out;
         }
 
         function setId($id)
         {
-            // $this->id = (int) $id;
+            $this->id = (int) $id;
         }
 
         function getBookCopyId()
