@@ -38,9 +38,9 @@ class BookTest extends PHPUnit_Framework_TestCase
     function test_save()
     {
       //Arrange
-      $title = "A Book";
+      $title = "A 'Book";
       $publish_date = "2013-11-11";
-      $synopsis = "It has words";
+      $synopsis = "It 'has words";
       $book1 = new Book($title, $publish_date, $synopsis);
 
       //Act
