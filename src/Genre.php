@@ -30,7 +30,9 @@
     }
 
     function save() {
-      $GLOBALS['DB']->exec("INSERT INTO genres (genre_name) VALUES ('{$this->getGenreName()}');");
+      $prepare_statement = $GLOBALS['DB']->prepare("INSERT INTO genres (genre_name) VALUES (:genre_name);");
+      $prepare_statement->bindValue(":genre_name", $this->getGenreName(), PDO::PARAM_STR);
+      $prepare_statement->execute();
       $this->setId($GLOBALS['DB']->lastInsertId());
     }
 
@@ -94,7 +96,9 @@
 
     function updateGenreName($new_genre_name)
     {
-      $GLOBALS['DB']->exec("UPDATE genres SET genre_name = '{$new_genre_name}' WHERE id = {$this->getId()};");
+      $prepare_statement = $GLOBALS['DB']->prepare("UPDATE genres SET genre_name = :new_genre_name WHERE id = {$this->getId()};");
+      $prepare_statement->bindValue(':new_genre_name', $new_genre_name, PDO::PARAM_STR);
+      $prepare_statement->execute();
       $this->setGenreName($new_genre_name);
     }
   }

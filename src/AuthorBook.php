@@ -17,7 +17,7 @@
     }
 
     public function setId($id){
-      $this->id = $id;
+      $this->id = (int)$id;
     }
 
     public function getAuthorId(){
@@ -25,7 +25,7 @@
     }
 
     public function setAuthorId($author_id){
-      $this->author_id = $author_id;
+      $this->author_id = (int)$author_id;
     }
 
     public function getBookId(){
@@ -33,7 +33,7 @@
     }
 
     public function setBookId($book_id){
-      $this->book_id = $book_id;
+      $this->book_id = (int)$book_id;
     }
 
     function save()

@@ -24,7 +24,7 @@ class Patron
 
   function setContactInfo($contact_info)
   {
-    $this->contact_info = $contact_info;
+    $this->contact_info = (string) $contact_info;
   }
 
   function getContactInfo(){

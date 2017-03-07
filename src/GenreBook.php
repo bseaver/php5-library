@@ -17,7 +17,7 @@
     }
 
     public function setId($id){
-      $this->id = $id;
+      $this->id = (int) $id;
     }
 
     public function getGenreId(){
@@ -25,7 +25,7 @@
     }
 
     public function setGenreId($genre_id){
-      $this->genre_id = $genre_id;
+      $this->genre_id = (int)$genre_id;
     }
 
     public function getBookId(){
@@ -33,7 +33,7 @@
     }
 
     public function setBookId($book_id){
-      $this->book_id = $book_id;
+      $this->book_id = (int) $book_id;
     }
 
     function save()

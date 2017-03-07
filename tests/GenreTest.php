@@ -19,7 +19,7 @@
     function test_getter_setters_contructor()
     {
       //Arrange
-      $genre_name = "Genre";
+      $genre_name = "Genr'e";
       $genre = new Genre('Bob');
 
       //Act
@@ -33,12 +33,12 @@
     function test_save()
     {
       //Arrange
-      $genre_name = "An Genre";
-      $genre1 = new Genre($genre_name, null);
+      $genre_name = "An Genres";
+      $genre1 = new Genre($genre_name);
 
       //Act
       $genre1->save();
-      $result = Genre::getSome('all', null);
+      $result = Genre::getSome('all');
 
       //Assert
       $this->assertEquals([$genre1], $result);
@@ -83,11 +83,12 @@
     {
       $genre1 = new Genre("Bob");
       $new_genre_name = 'Updated GenreName';
+      $genre1->save();
 
       $genre1->updateGenreName($new_genre_name);
-      $result = $genre1->getGenreName();
+      $result = Genre::getSome('all');
 
-      $this->assertEquals($new_genre_name, $result);
+      $this->assertEquals($new_genre_name, $result[0]->getGenreName());
     }
   }
 
