@@ -97,5 +97,29 @@
             );
         }
 
+        function test_Checkout_getSome_id()
+        {
+            // Arrange
+            $checkout1 = new Checkout(1, 3, '2017-03-07', '2017-03-21', '', 'testing', 1, 923);
+            $checkout2 = new Checkout(2, 4, '2017-03-08', '2017-03-22', '2017-03-10', 'testing2', 0, 924);
+            $checkout1->save();
+            $checkout2->save();
+            $checkout3 = new Checkout(3, 5, '2017-03-09', '2017-03-23', '2017-03-11', 'testing3', 0, 925);
+            $checkout4 = new Checkout(4, 6, '2017-03-10', '2017-03-24', '2017-03-12', 'testing4', 0, 926);
+            $checkout3->save();
+            $checkout4->save();
+
+            // Act
+            $results = Checkout::getSome('id', $checkout3->getId());
+
+            // Assert
+            $this->assertEquals(
+                [$checkout3],
+                $results
+            );
+
+
+        }
+
     }
 ?>
