@@ -72,6 +72,7 @@
       }
       return $output;
     }
+
     static function deleteSome($search_selector, $search_argument = 0)
     {
       $delete_command = '';
