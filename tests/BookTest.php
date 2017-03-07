@@ -23,19 +23,16 @@ class BookTest extends PHPUnit_Framework_TestCase
     $title = "A Book";
     $publish_date = "2013-11-11";
     $synopsis = "It has words";
-    $genre_id = 1;
-    $book1 = new Book($title, $publish_date, $synopsis, $genre_id);
-
+    $book1 = new Book($title, $publish_date, $synopsis);
 
     //Ace
     $book2 = new Book();
     $book2->setTitle($book1->getTitle());
     $book2->setPublishDate($book1->getPublishDate());
     $book2->setSynopsis($book1->getSynopsis());
-    $book2->setGenreId($book1->getGenreId());
 
     //Assert
-    $this->assertEquals([$title, $publish_date, $synopsis, $genre_id], [$book2->getTitle(), $book2->getPublishDate(), $book2->getSynopsis(), $book2->getGenreId()]);
+    $this->assertEquals([$title, $publish_date, $synopsis], [$book2->getTitle(), $book2->getPublishDate(), $book2->getSynopsis()]);
   }
 
     function test_save()
@@ -44,8 +41,7 @@ class BookTest extends PHPUnit_Framework_TestCase
       $title = "A Book";
       $publish_date = "2013-11-11";
       $synopsis = "It has words";
-      $genre_id = 1;
-      $book1 = new Book($title, $publish_date, $synopsis, $genre_id, null);
+      $book1 = new Book($title, $publish_date, $synopsis);
 
       //Act
       $book1->save();
@@ -60,10 +56,9 @@ class BookTest extends PHPUnit_Framework_TestCase
       //Arrange
       $publish_date = "2013-11-11";
       $synopsis = "It has words";
-      $genre_id = 1;
-      $book1 = new Book("Book 1", $publish_date, $synopsis, $genre_id);
-      $book2 = new Book("Book 2", $publish_date, $synopsis, $genre_id);
-      $book3 = new Book("Book 3", $publish_date, $synopsis, $genre_id);
+      $book1 = new Book("Book 1", $publish_date, $synopsis);
+      $book2 = new Book("Book 2", $publish_date, $synopsis);
+      $book3 = new Book("Book 3", $publish_date, $synopsis);
       $book1->save();
       $book2->save();
       $book3->save();
@@ -80,10 +75,9 @@ class BookTest extends PHPUnit_Framework_TestCase
       //Arrange
       $publish_date = "2013-11-11";
       $synopsis = "It has words";
-      $genre_id = 1;
-      $book1 = new Book("Book", $publish_date, $synopsis, $genre_id);
-      $book2 = new Book("Book", $publish_date, $synopsis, $genre_id);
-      $book3 = new Book("Book 3", $publish_date, $synopsis, $genre_id);
+      $book1 = new Book("Book", $publish_date, $synopsis);
+      $book2 = new Book("Book", $publish_date, $synopsis);
+      $book3 = new Book("Book 3", $publish_date, $synopsis);
       $book1->save();
       $book2->save();
       $book3->save();
@@ -100,8 +94,7 @@ class BookTest extends PHPUnit_Framework_TestCase
     {
       $publish_date = "2013-11-11";
       $synopsis = "It has words";
-      $genre_id = 1;
-      $book1 = new Book("Book", $publish_date, $synopsis, $genre_id);
+      $book1 = new Book("Book", $publish_date, $synopsis);
       $new_name = 'Updated Name';
 
       $book1->updateName($new_name);
@@ -114,8 +107,7 @@ class BookTest extends PHPUnit_Framework_TestCase
     {
       $publish_date = "2013-11-11";
       $synopsis = "It has words";
-      $genre_id = 1;
-      $book1 = new Book("Book", $publish_date, $synopsis, $genre_id);
+      $book1 = new Book("Book", $publish_date, $synopsis);
       $new_synopsis = 'Updated Stuff';
 
       $book1->updateSynopsis($new_synopsis);
