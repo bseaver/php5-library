@@ -93,5 +93,17 @@ class PatronTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($new_patron_name, $result[0]->getPatronName());
   }
+
+  function test_updateContactInfo()
+  {
+    $patron1 = new Patron("Bob", "none");
+    $new_contact_info = 'Updated ContactInfo';
+    $patron1->save();
+
+    $patron1->updateContactInfo($new_contact_info);
+    $result = Patron::getSome('all');
+
+    $this->assertEquals($new_contact_info, $result[0]->getContactInfo());
+  }
 }
  ?>

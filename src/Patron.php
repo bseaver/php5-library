@@ -132,7 +132,9 @@ class Patron
 
   function updateContactInfo($new_contact_info)
   {
-    $GLOBALS['DB']->exec("UPDATE patrons SET contact_info = '{$new_contact_info}' WHERE id = {$this->getId()};");
+    $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET contact_info = :new_contact_info WHERE id = {$this->getId()};");
+    $statement_handle->bindValue(':new_contact_info', $new_contact_info, PDO::PARAM_STR);
+    $statement_handle->execute();
     $this->setContactInfo($new_contact_info);
   }
 }
