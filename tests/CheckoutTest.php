@@ -71,5 +71,31 @@
                 Checkout::getSome('all')
             );
         }
+
+        function test_Checkout_update()
+        {
+            // Arrange
+            $checkout1 = new Checkout(1, 3, '2017-03-07', '2017-03-21', '', 'testing', 1, 923);
+            $checkout1->save();
+
+            // Act
+            $checkout1->update(2, 4, '2017-03-08', '2017-03-22', '2017-03-10', 'testing2', 0);
+            $result = Checkout::getSome('all');
+
+            // Assert
+            $this->assertEquals(
+                [2, 4, '2017-03-08', '2017-03-22', '2017-03-10', 'testing2', 0],
+                [
+                    $result[0]->getBookCopyId(),
+                    $result[0]->getPatronId(),
+                    $result[0]->getCheckoutDate(),
+                    $result[0]->getDueDate(),
+                    $result[0]->getReturnedDate(),
+                    $result[0]->getComment(),
+                    $result[0]->getStillOut()
+                ]
+            );
+        }
+
     }
 ?>
