@@ -42,7 +42,13 @@ class Patron
   }
 
   function save() {
-    $GLOBALS['DB']->exec("INSERT INTO patrons (patron_name, contact_info) VALUES ('{$this->getPatronName()}', '{$this->getContactInfo()}');");
+    $statement_handle = $GLOBALS['DB']->prepare(
+      "INSERT INTO patrons (patron_name, contact_info) VALUES
+      (:patron_name, :contact_info);"
+    );
+    $statement_handle->bindValue(':patron_name', $this->getPatronName(), PDO::PARAM_STR);
+    $statement_handle->bindValue(':contact_info', $this->getContactInfo(), PDO::PARAM_STR);
+    $statement_handle->execute();
     $this->setId($GLOBALS['DB']->lastInsertId());
   }
 
@@ -54,7 +60,7 @@ class Patron
         $statement_handle = $GLOBALS['DB']->prepare(
             "SELECT * FROM patrons WHERE id = :search_argument ORDER BY patron_name, id;"
         );
-        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
     }
     if ($search_selector == 'patron_name') {
         $statement_handle = $GLOBALS['DB']->prepare(
@@ -75,6 +81,7 @@ class Patron
       $statement_handle->execute();
       $results = $statement_handle->fetchAll();
       foreach ($results as $result) {
+
               $new_patron = new Patron(
               $result['patron_name'],
               $result['contact_info'],
@@ -99,13 +106,13 @@ class Patron
         $statement_handle = $GLOBALS['DB']->prepare(
             "DELETE FROM patrons WHERE patron_name = :search_argument;"
         );
-        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
     }
     if ($search_selector == 'contact_info') {
         $statement_handle = $GLOBALS['DB']->prepare(
             "DELETE FROM patrons WHERE contact_info = :search_argument;"
         );
-        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
     }
     if ($search_selector == 'all') {
         $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM patrons;");
@@ -117,13 +124,17 @@ class Patron
 
   function updatePatronName($new_patron_name)
   {
-    $GLOBALS['DB']->exec("UPDATE patrons SET patron_name = '{$new_patron_name}' WHERE id = {$this->getId()};");
+    $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET patron_name = :new_patron_name WHERE id = {$this->getId()};");
+    $statement_handle->bindValue(':new_patron_name', $new_patron_name, PDO::PARAM_STR);
+    $statement_handle->execute();
     $this->setPatronName($new_patron_name);
   }
-  
+
   function updateContactInfo($new_contact_info)
   {
-    $GLOBALS['DB']->exec("UPDATE patrons SET contact_info = '{$new_contact_info}' WHERE id = {$this->getId()};");
+    $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET contact_info = :new_contact_info WHERE id = {$this->getId()};");
+    $statement_handle->bindValue(':new_contact_info', $new_contact_info, PDO::PARAM_STR);
+    $statement_handle->execute();
     $this->setContactInfo($new_contact_info);
   }
 }
