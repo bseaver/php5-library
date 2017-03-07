@@ -47,8 +47,15 @@
   	}
 
     function save() {
-      $GLOBALS['DB']->exec("INSERT INTO books (title, publish_date, synopsis) VALUES ('{$this->getTitle()}', '{$this->getPublishDate()}', '{$this->getSynopsis()}');");
-      $this->setId($GLOBALS['DB']->lastInsertId());
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "INSERT INTO books (title, publish_date, synopsis) VALUES (:title, :publish_date, :synopsis);"
+        );
+        $this->setId($GLOBALS['DB']->lastInsertId());
+        $statement_handle->bindValue(':title', $this->getTitle(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':publish_date', $this->getPublishDate(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':synopsis', $this->getSynopsis(), PDO::PARAM_STR);
+        $statement_handle->execute();
+        $this->setId($GLOBALS['DB']->lastInsertId());
     }
 
   static function getSome($search_selector, $search_argument = '')
@@ -117,15 +124,25 @@
       }
     }
 
-    function updateName($new_name)
+    function updateTitle($new_title)
     {
-      $GLOBALS['DB']->exec("UPDATE books SET name = '{$new_name}' WHERE id = {$this->getId()};");
-      $this->setTitle($new_name);
+        $this->setTitle($new_title);
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "UPDATE books SET title = :title WHERE id = :id;"
+        );
+        $statement_handle->bindValue(':title', $this->getTitle(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+        $statement_handle->execute();
     }
     function updateSynopsis($new_synopsis)
     {
-      $GLOBALS['DB']->exec("UPDATE books SET synopsis = '{$new_synopsis}' WHERE id = {$this->getId()};");
-      $this->setSynopsis($new_synopsis);
+        $this->setSynopsis($new_synopsis);
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "UPDATE books SET synopsis = :synopsis WHERE id = :id;"
+        );
+        $statement_handle->bindValue(':synopsis', $this->getSynopsis(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+        $statement_handle->execute();
     }
   }
 ?>
