@@ -39,26 +39,37 @@
     function save()
     {
       $GLOBALS['DB']->exec(
-      "INSERT INTO author_book
+      "INSERT INTO authors_books
           (author_id, book_id) VALUES
           ({$this->getAuthorId()}, {$this->getBookId()});"
       );
       $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
-    
+    function update($author_id, $book_id)
+    {
+      $this->setAuthorId($author_id);
+      $this->setBookId($book_id);
+      $GLOBALS['DB']->exec(
+          "UPDATE authors_books SET
+              author_id = {$this->getAuthorId()},
+              book_id = {$this->getBookId()}
+          WHERE id = {$this->getId()};"
+      );
+    }
+
     static function getSome($search_selector, $search_argument = '')
     {
       $output = array();
       $query = "";
       if ($search_selector == 'all') {
-          $query = "SELECT * FROM author_book;";
+          $query = "SELECT * FROM authors_books;";
       }
       if ($search_selector == 'author_id') {
-          $query = "SELECT * FROM author_book WHERE author_id = $search_argument;";
+          $query = "SELECT * FROM authors_books WHERE author_id = $search_argument;";
       }
       if ($search_selector == 'book_id') {
-          $query = "SELECT * FROM author_book WHERE book_id = $search_argument;";
+          $query = "SELECT * FROM authors_books WHERE book_id = $search_argument;";
       }
       if ($query) {
           $results = $GLOBALS['DB']->query($query);
@@ -78,16 +89,16 @@
     {
       $delete_command = '';
       if ($search_selector == 'id') {
-          $delete_command = "DELETE FROM author_book WHERE id = $search_argument;";
+          $delete_command = "DELETE FROM authors_books WHERE id = $search_argument;";
       }
       if ($search_selector == 'all') {
-          $delete_command = "DELETE FROM author_book;";
+          $delete_command = "DELETE FROM authors_books;";
       }
       if ($search_selector == 'author_id') {
-          $delete_command = "DELETE FROM author_book WHERE author_id = $search_argument;";
+          $delete_command = "DELETE FROM authors_books WHERE author_id = $search_argument;";
       }
       if ($search_selector == 'book_id') {
-          $delete_command = "DELETE FROM author_book WHERE book_id = $search_argument;";
+          $delete_command = "DELETE FROM authors_books WHERE book_id = $search_argument;";
       }
       if ($delete_command) {
           $GLOBALS['DB']->exec($delete_command);

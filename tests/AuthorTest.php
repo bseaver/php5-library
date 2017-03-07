@@ -19,22 +19,22 @@
     function test_getter_setters_contructor()
     {
       //Arrange
-      $name = "Author";
+      $author_name = "Author";
       $author = new Author('Bob');
 
       //Act
-      $author2 = new Author($name);
-      $author2->setName($author->getName());
+      $author2 = new Author($author_name);
+      $author2->setAuthorName($author->getAuthorName());
 
       //Assert
-      $this->assertEquals(['Bob'], [$author2->getName()]);
+      $this->assertEquals(['Bob'], [$author2->getAuthorName()]);
     }
 
     function test_save()
     {
       //Arrange
-      $name = "An Author";
-      $author1 = new Author($name, null);
+      $author_name = "An Author";
+      $author1 = new Author($author_name, null);
 
       //Act
       $author1->save();
@@ -55,7 +55,7 @@
       $author3->save();
 
       //Act
-      $result = Author::getSome('name', "Author 1");
+      $result = Author::getSome('author_name', "Author 1");
 
       //Assert
       $this->assertEquals([$author1], $result);
@@ -72,22 +72,22 @@
       $author3->save();
 
       //Act
-      Author::deleteSome('name', 'Author');
+      Author::deleteSome('author_name', 'Author');
       $result = Author::getSome('all');
 
       //Assest
       $this->assertEquals([$author3], $result);
     }
 
-    function test_updateName()
+    function test_updateAuthorName()
     {
       $author1 = new Author("Bob");
-      $new_name = 'Updated Name';
+      $new_author_name = 'Updated AuthorName';
 
-      $author1->updateName($new_name);
-      $result = $author1->getName();
+      $author1->updateAuthorName($new_author_name);
+      $result = $author1->getAuthorName();
 
-      $this->assertEquals($new_name, $result);
+      $this->assertEquals($new_author_name, $result);
     }
   }
 
