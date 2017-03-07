@@ -117,7 +117,7 @@
             $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
             $statement_handle->bindValue(':still_out', $this->getStillOut(), PDO::PARAM_INT);
             $statement_handle->execute();
-            $this->id = $GLOBALS['DB']->lastInsertId();
+            $this->setId($GLOBALS['DB']->lastInsertId());
         }
 
         function update($book_copy_id, $patron_id, $checkout_date, $due_date, $returned_date, $comment, $still_out)
