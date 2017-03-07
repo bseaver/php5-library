@@ -78,15 +78,15 @@ USE `library`;
 
 DROP TABLE IF EXISTS `genre`;
 
-CREATE TABLE genre (id SERIAL PRIMARY KEY, genre_name varchar(255));
+CREATE TABLE `genre` (id SERIAL PRIMARY KEY, genre_name varchar(255));
 
 DROP TABLE IF EXISTS `book_copies`;
 
-CREATE TABLE brands (id SERIAL PRIMARY KEY, name varchar(255));
+CREATE TABLE `book_copies` (id SERIAL PRIMARY KEY, book_condition TINYINT, comment VARCHAR (255), book_id BIGINT);
 
-DROP TABLE IF EXISTS `brands_stores`;
+DROP TABLE IF EXISTS `checkouts`;
 
-CREATE TABLE brands_stores (id SERIAL PRIMARY KEY, brand_id BIGINT, store_id BIGINT);
+CREATE TABLE `checkouts` (id SERIAL PRIMARY KEY, book_copy_id BIGINT, patron_id BIGINT, checkout_date DATE, due_date DATE, returned_date DATE, comment VARCHAR (255), still_out TINYINT);
 
 
 * Install dependencies (composer.json, composer.lock, .gitignore)
