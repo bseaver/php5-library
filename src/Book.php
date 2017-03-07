@@ -19,7 +19,7 @@
   	}
 
   	public function setTitle($title){
-  		$this->title = $title;
+  		$this->title = (string) $title;
   	}
 
   	public function getPublishDate(){
@@ -35,7 +35,7 @@
   	}
 
   	public function setSynopsis($synopsis){
-  		$this->synopsis = $synopsis;
+  		$this->synopsis = (string) $synopsis;
   	}
 
   	public function getId(){
