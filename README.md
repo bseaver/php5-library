@@ -98,7 +98,7 @@ CREATE TABLE `authors_books` (`id` SERIAL PRIMARY KEY, `author_id` bigint(20), `
 
 DROP TABLE IF EXISTS `books`;
 
-CREATE TABLE `books` (`id` SERIAL PRIMARY KEY, `title` varchar(255), `publish_date` date, `synopsis` VARCHAR(255), `genre_id` bigint(20));
+CREATE TABLE `books` (`id` SERIAL PRIMARY KEY, `title` varchar(255), `publish_date` date, `synopsis` VARCHAR(255));
 
 DROP TABLE IF EXISTS `patrons`;
 

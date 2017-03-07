@@ -37,11 +37,11 @@ class PatronTest extends PHPUnit_Framework_TestCase
     //Arrange
     $patron_name = "A Patron";
     $contact_info = "None";
-    $patron1 = new Patron($patron_name, $contact_info, null);
+    $patron1 = new Patron($patron_name, $contact_info);
 
     //Act
     $patron1->save();
-    $result = Patron::getSome('all', null);
+    $result = Patron::getSome('all');
 
     //Assert
     $this->assertEquals([$patron1], $result);
@@ -86,11 +86,12 @@ class PatronTest extends PHPUnit_Framework_TestCase
   {
     $patron1 = new Patron("Bob", "none");
     $new_patron_name = 'Updated PatronName';
+    $patron1->save();
 
     $patron1->updatePatronName($new_patron_name);
-    $result = $patron1->getPatronName();
+    $result = Patron::getSome('all');
 
-    $this->assertEquals($new_patron_name, $result);
+    $this->assertEquals($new_patron_name, $result[0]->getPatronName());
   }
 }
  ?>
