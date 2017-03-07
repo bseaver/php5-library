@@ -79,6 +79,16 @@
       $this->assertEquals([$author3], $result);
     }
 
+    function test_updateName()
+    {
+      $author1 = new Author("Bob");
+      $new_name = 'Updated Name';
+
+      $author1->updateName($new_name);
+      $result = $author1->getName();
+
+      $this->assertEquals($new_name, $result);
+    }
   }
 
  ?>
