@@ -19,25 +19,25 @@ class PatronTest extends PHPUnit_Framework_TestCase
   function test_getter_setters_contructor()
   {
     //Arrange
-    $name = "Patron";
+    $patron_name = "Patron";
     $contact_info = "None";
     $patron = new Patron('Bob', "57329485");
 
     //Act
-    $patron2 = new Patron($name, $contact_info);
-    $patron2->setName($patron->getName());
+    $patron2 = new Patron($patron_name, $contact_info);
+    $patron2->setPatronName($patron->getPatronName());
     $patron2->setContactInfo($patron->getContactInfo());
 
     //Assert
-    $this->assertEquals(['Bob', "57329485"], [$patron2->getName(),$patron2->getContactInfo() ]);
+    $this->assertEquals(['Bob', "57329485"], [$patron2->getPatronName(),$patron2->getContactInfo() ]);
   }
 
   function test_save()
   {
     //Arrange
-    $name = "A Patron";
+    $patron_name = "A Patron";
     $contact_info = "None";
-    $patron1 = new Patron($name, $contact_info, null);
+    $patron1 = new Patron($patron_name, $contact_info, null);
 
     //Act
     $patron1->save();
@@ -47,7 +47,7 @@ class PatronTest extends PHPUnit_Framework_TestCase
     $this->assertEquals([$patron1], $result);
   }
 
-  function test_get_some_name()
+  function test_get_some_patron_name()
   {
     //Arrange
     $patron1 = new Patron("Patron 1", "none");
@@ -58,13 +58,13 @@ class PatronTest extends PHPUnit_Framework_TestCase
     $patron3->save();
 
     //Act
-    $result = Patron::getSome('name', "Patron 1");
+    $result = Patron::getSome('patron_name', "Patron 1");
 
     //Assert
     $this->assertEquals([$patron1], $result);
   }
 
-  function test_delete_some_name()
+  function test_delete_some_patron_name()
   {
     //Arrange
     $patron1 = new Patron("Patron", "none", null);
@@ -75,22 +75,22 @@ class PatronTest extends PHPUnit_Framework_TestCase
     $patron3->save();
 
     //Act
-    Patron::deleteSome('name', 'Patron');
+    Patron::deleteSome('patron_name', 'Patron');
     $result = Patron::getSome('all');
 
     //Assest
     $this->assertEquals([$patron3], $result);
   }
 
-  function test_updateName()
+  function test_updatePatronName()
   {
     $patron1 = new Patron("Bob", "none");
-    $new_name = 'Updated Name';
+    $new_patron_name = 'Updated PatronName';
 
-    $patron1->updateName($new_name);
-    $result = $patron1->getName();
+    $patron1->updatePatronName($new_patron_name);
+    $result = $patron1->getPatronName();
 
-    $this->assertEquals($new_name, $result);
+    $this->assertEquals($new_patron_name, $result);
   }
 }
  ?>

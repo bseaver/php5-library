@@ -1,22 +1,22 @@
 <?php
   class Author{
-    private $name;
+    private $author_name;
     private $id;
 
-    function __construct($name = '', $id = null)
+    function __construct($author_name = '', $id = null)
     {
-      $this->setName($name);
+      $this->setAuthorName($author_name);
       $this->setId($id);
     }
 
-    function setName($new_name)
+    function setAuthorName($new_author_name)
     {
-      $this->name = (string) $new_name;
+      $this->author_name = (string) $new_author_name;
     }
 
-    function getName()
+    function getAuthorName()
     {
-      return $this->name;
+      return $this->author_name;
     }
 
     function setId($new_id)
@@ -30,72 +30,72 @@
     }
 
     function save() {
-      $GLOBALS['DB']->exec("INSERT INTO authors (name) VALUES ('{$this->getName()}');");
+      $GLOBALS['DB']->exec("INSERT INTO authors (author_name) VALUES ('{$this->getAuthorName()}');");
       $this->setId($GLOBALS['DB']->lastInsertId());
     }
 
     static function getSome($search_selector, $search_argument = '')
     {
-        $output = array();
-        $statement_handle = null;
-        if ($search_selector == 'id') {
-            $statement_handle = $GLOBALS['DB']->prepare(
-                "SELECT * FROM authors WHERE id = :search_argument ORDER BY name, id;"
-            );
-            $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
-        }
-        if ($search_selector == 'name') {
-            $statement_handle = $GLOBALS['DB']->prepare(
-                "SELECT * FROM authors WHERE name = :search_argument ORDER BY name, id;"
-            );
-            $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
-        }
-        if ($search_selector == 'all') {
-            $statement_handle = $GLOBALS['DB']->prepare("SELECT * FROM authors ORDER BY id;");
-        }
-        if ($statement_handle) {
-          // var_dump($statement_handle);
-            $statement_handle->execute();
-            $results = $statement_handle->fetchAll();
-            // $results = $GLOBALS['DB']->query($query);
-            foreach ($results as $result) {
-                    $new_author = new Author(
-                    $result['name'],
-                    $result['id']
-                );
-                array_push($output, $new_author);
-            }
-        }
-        return $output;
+      $output = array();
+      $statement_handle = null;
+      if ($search_selector == 'id') {
+          $statement_handle = $GLOBALS['DB']->prepare(
+              "SELECT * FROM authors WHERE id = :search_argument ORDER BY author_name, id;"
+          );
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+      }
+      if ($search_selector == 'author_name') {
+          $statement_handle = $GLOBALS['DB']->prepare(
+              "SELECT * FROM authors WHERE author_name = :search_argument ORDER BY author_name, id;"
+          );
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+      }
+      if ($search_selector == 'all') {
+          $statement_handle = $GLOBALS['DB']->prepare("SELECT * FROM authors ORDER BY id;");
+      }
+      if ($statement_handle) {
+        // var_dump($statement_handle);
+          $statement_handle->execute();
+          $results = $statement_handle->fetchAll();
+          // $results = $GLOBALS['DB']->query($query);
+          foreach ($results as $result) {
+                  $new_author = new Author(
+                  $result['author_name'],
+                  $result['id']
+              );
+              array_push($output, $new_author);
+          }
+      }
+      return $output;
     }
 
     static function deleteSome($search_selector, $search_argument = 0)
     {
-        $statement_handle = null;
-        if ($search_selector == 'id') {
-            $statement_handle = $GLOBALS['DB']->prepare(
-                "DELETE FROM authors WHERE id = :search_argument;"
-            );
-            $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
-        }
-        if ($search_selector == 'name') {
-            $statement_handle = $GLOBALS['DB']->prepare(
-                "DELETE FROM authors WHERE name = :search_argument;"
-            );
-            $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
-        }
-        if ($search_selector == 'all') {
-            $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM authors;");
-        }
-        if ($statement_handle) {
-            $statement_handle->execute();
-        }
+      $statement_handle = null;
+      if ($search_selector == 'id') {
+          $statement_handle = $GLOBALS['DB']->prepare(
+              "DELETE FROM authors WHERE id = :search_argument;"
+          );
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+      }
+      if ($search_selector == 'author_name') {
+          $statement_handle = $GLOBALS['DB']->prepare(
+              "DELETE FROM authors WHERE author_name = :search_argument;"
+          );
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+      }
+      if ($search_selector == 'all') {
+          $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM authors;");
+      }
+      if ($statement_handle) {
+          $statement_handle->execute();
+      }
     }
 
-    function updateName($new_name)
+    function updateAuthorName($new_author_name)
     {
-      $GLOBALS['DB']->exec("UPDATE authors SET name = '{$new_name}' WHERE id = {$this->getId()};");
-      $this->setName($new_name);
+      $GLOBALS['DB']->exec("UPDATE authors SET author_name = '{$new_author_name}' WHERE id = {$this->getId()};");
+      $this->setAuthorName($new_author_name);
     }
   }
 
