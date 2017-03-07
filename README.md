@@ -78,16 +78,31 @@ USE `library`;
 
 DROP TABLE IF EXISTS `genre`;
 
-CREATE TABLE `genre` (id SERIAL PRIMARY KEY, genre_name varchar(255));
+CREATE TABLE `genre` (`id` SERIAL PRIMARY KEY, `genre_name` varchar(255));
 
 DROP TABLE IF EXISTS `book_copies`;
 
-CREATE TABLE `book_copies` (id SERIAL PRIMARY KEY, book_condition TINYINT, comment VARCHAR (255), book_id BIGINT);
+CREATE TABLE `book_copies` (`id` SERIAL PRIMARY KEY, `book_condition` TINYINT, `comment` VARCHAR (255), `book_id` BIGINT);
 
 DROP TABLE IF EXISTS `checkouts`;
 
-CREATE TABLE `checkouts` (id SERIAL PRIMARY KEY, book_copy_id BIGINT, patron_id BIGINT, checkout_date DATE, due_date DATE, returned_date DATE, comment VARCHAR (255), still_out TINYINT);
+CREATE TABLE `checkouts` (`id` SERIAL PRIMARY KEY, `book_copy_id` BIGINT, `patron_id` BIGINT, `checkout_date` DATE, `due_date` DATE, `returned_date` DATE, `comment` VARCHAR (255), `still_out` TINYINT);
 
+DROP TABLE IF EXISTS `authors`;
+
+CREATE TABLE `authors` (`id` SERIAL PRIMARY KEY, `author_name` varchar(255));
+
+DROP TABLE IF EXISTS `authors_books`;
+
+CREATE TABLE `authors_books` (`id` SERIAL PRIMARY KEY, `author_id` bigint(20), `book_id` bigint(20));
+
+DROP TABLE IF EXISTS `books`;
+
+CREATE TABLE `books` (`id` SERIAL PRIMARY KEY, `title` varchar(255), `publish_date` date, `synopsis` VARCHAR(255), `genre_id` bigint(20));
+
+DROP TABLE IF EXISTS `patrons`;
+
+CREATE TABLE `patrons` (`id` SERIAL PRIMARY KEY, `name` varchar(255), `contact_info` varchar(255));
 
 * Install dependencies (composer.json, composer.lock, .gitignore)
 * Build and test objects for tables
