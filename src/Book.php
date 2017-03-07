@@ -124,15 +124,25 @@
       }
     }
 
-    function updateName($new_name)
+    function updateTitle($new_title)
     {
-      $GLOBALS['DB']->exec("UPDATE books SET name = '{$new_name}' WHERE id = {$this->getId()};");
-      $this->setTitle($new_name);
+        $this->setTitle($new_title);
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "UPDATE books SET title = :title WHERE id = :id;"
+        );
+        $statement_handle->bindValue(':title', $this->getTitle(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+        $statement_handle->execute();
     }
     function updateSynopsis($new_synopsis)
     {
-      $GLOBALS['DB']->exec("UPDATE books SET synopsis = '{$new_synopsis}' WHERE id = {$this->getId()};");
-      $this->setSynopsis($new_synopsis);
+        $this->setSynopsis($new_synopsis);
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "UPDATE books SET synopsis = :synopsis WHERE id = :id;"
+        );
+        $statement_handle->bindValue(':synopsis', $this->getSynopsis(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+        $statement_handle->execute();
     }
   }
 ?>
