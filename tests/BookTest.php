@@ -90,30 +90,33 @@ class BookTest extends PHPUnit_Framework_TestCase
       $this->assertEquals([$book3], $result);
     }
 
-    function test_updateName()
+    function test_updateTitle()
     {
-      $publish_date = "2013-11-11";
-      $synopsis = "It has words";
-      $book1 = new Book("Book", $publish_date, $synopsis);
-      $new_name = 'Updated Name';
+        $publish_date = "2013-11-11";
+        $synopsis = "It has words";
+        $book1 = new Book("Book", $publish_date, $synopsis);
+        $book1->save();
 
-      $book1->updateName($new_name);
-      $result = $book1->getTitle();
+        $new_title = "Update'd Name";
 
-      $this->assertEquals($new_name, $result);
+        $book1->updateTitle($new_title);
+        $result = Book::getSome('all');
+
+        $this->assertEquals($new_title, $result[0]->getTitle());
 
     }
     function test_updateSynopsis()
     {
-      $publish_date = "2013-11-11";
-      $synopsis = "It has words";
-      $book1 = new Book("Book", $publish_date, $synopsis);
-      $new_synopsis = 'Updated Stuff';
+        $publish_date = "2013-11-11";
+        $synopsis = "It has words";
+        $book1 = new Book("Book", $publish_date, $synopsis);
+        $book1->save();
+        $new_synopsis = "Upda'ted Stuff";
 
-      $book1->updateSynopsis($new_synopsis);
-      $result = $book1->getSynopsis();
+        $book1->updateSynopsis($new_synopsis);
+        $result = Book::getSome('all');
 
-      $this->assertEquals($new_synopsis, $result);
+        $this->assertEquals($new_synopsis, $result[0]->getSynopsis());
 
     }
 }
