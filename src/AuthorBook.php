@@ -46,6 +46,7 @@
       $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
+    
     static function getSome($search_selector, $search_argument = '')
     {
       $output = array();
