@@ -13,6 +13,11 @@ $DB = new PDO($server, $username, $password);
 
 class AuthorBookTest extends PHPUnit_Framework_TestCase
 {
+  protected function tearDown()
+  {
+    AuthorBook::deleteSome('all');
+  }
+  
   function test_AuthorBook_get_set_construct()
   {
     // Arrange
@@ -47,6 +52,23 @@ class AuthorBookTest extends PHPUnit_Framework_TestCase
         AuthorBook::getAll()
     );
   }
+
+  function test_AuthorBook_update()
+  {
+    // Arrange
+    $author_book1 = new AuthorBook(2, 1);
+    $author_book1->save();
+    // Act
+    $author_book1->update(33, 37);
+    $author_books = AuthorBook::getSome('all');
+    $author_book2 = $author_books[0];
+    // Assert
+    $this->assertEquals(
+        [33, 37],
+        [$author_book2->getAuthorId(), $author_book2->getBookId()]
+    );
+  }
+
 }
 
 ?>
