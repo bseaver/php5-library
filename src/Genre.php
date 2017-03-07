@@ -44,7 +44,7 @@
           $statement_handle = $GLOBALS['DB']->prepare(
               "SELECT * FROM genres WHERE id = :search_argument ORDER BY genre_name, id;"
           );
-          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
       }
       if ($search_selector == 'genre_name') {
           $statement_handle = $GLOBALS['DB']->prepare(
@@ -84,7 +84,7 @@
           $statement_handle = $GLOBALS['DB']->prepare(
               "DELETE FROM genres WHERE genre_name = :search_argument;"
           );
-          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
       }
       if ($search_selector == 'all') {
           $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM genres;");

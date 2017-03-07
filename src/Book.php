@@ -66,7 +66,7 @@
       $statement_handle = $GLOBALS['DB']->prepare(
           "SELECT * FROM books WHERE id = :search_argument ORDER BY title, id;"
       );
-      $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+      $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
     }
     if ($search_selector == 'title') {
       $statement_handle = $GLOBALS['DB']->prepare(
