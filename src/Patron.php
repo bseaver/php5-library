@@ -122,20 +122,20 @@ class Patron
     }
   }
 
-  function updatePatronName($new_patron_name)
-  {
-    $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET patron_name = :new_patron_name WHERE id = {$this->getId()};");
-    $statement_handle->bindValue(':new_patron_name', $new_patron_name, PDO::PARAM_STR);
-    $statement_handle->execute();
-    $this->setPatronName($new_patron_name);
-  }
+    function updatePatronName($new_patron_name)
+    {
+        $this->setPatronName($new_patron_name);
+        $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET patron_name = :new_patron_name WHERE id = {$this->getId()};");
+        $statement_handle->bindValue(':new_patron_name', $this->getPatronName(), PDO::PARAM_STR);
+        $statement_handle->execute();
+    }
 
-  function updateContactInfo($new_contact_info)
-  {
-    $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET contact_info = :new_contact_info WHERE id = {$this->getId()};");
-    $statement_handle->bindValue(':new_contact_info', $new_contact_info, PDO::PARAM_STR);
-    $statement_handle->execute();
-    $this->setContactInfo($new_contact_info);
-  }
+    function updateContactInfo($new_contact_info)
+    {
+        $this->setContactInfo($new_contact_info);
+        $statement_handle = $GLOBALS['DB']->prepare("UPDATE patrons SET contact_info = :new_contact_info WHERE id = {$this->getId()};");
+        $statement_handle->bindValue(':new_contact_info', $this->getContactInfo(), PDO::PARAM_STR);
+        $statement_handle->execute();
+    }
 }
  ?>

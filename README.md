@@ -76,9 +76,9 @@ CREATE DATABASE IF NOT EXISTS `library`;
 
 USE `library`;
 
-DROP TABLE IF EXISTS `genre`;
+DROP TABLE IF EXISTS `genres`;
 
-CREATE TABLE `genre` (`id` SERIAL PRIMARY KEY, `genre_name` varchar(255));
+CREATE TABLE `genres` (`id` SERIAL PRIMARY KEY, `genre_name` varchar(255));
 
 DROP TABLE IF EXISTS `book_copies`;
 
@@ -103,6 +103,9 @@ CREATE TABLE `books` (`id` SERIAL PRIMARY KEY, `title` varchar(255), `publish_da
 DROP TABLE IF EXISTS `patrons`;
 
 CREATE TABLE `patrons` (`id` SERIAL PRIMARY KEY, `patron_name` varchar(255), `contact_info` varchar(255));
+
+DROP TABLE IF EXISTS `genres_books`;
+CREATE TABLE `genres_books` ( `id`  SERIAL PRIMARY KEY, `genre_id` bigint(20), `book_id` bigint(20));
 
 
 * Install dependencies (composer.json, composer.lock, .gitignore)
