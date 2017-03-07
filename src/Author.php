@@ -108,5 +108,3 @@
   }
 
  ?>
- '{$new_author_name}'
-{$this->getId()}
