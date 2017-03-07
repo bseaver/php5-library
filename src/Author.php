@@ -30,8 +30,13 @@
     }
 
     function save() {
-      $GLOBALS['DB']->exec("INSERT INTO authors (author_name) VALUES ('{$this->getAuthorName()}');");
-      $this->setId($GLOBALS['DB']->lastInsertId());
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "INSERT INTO authors (author_name) VALUES (:author_name);"
+        );
+        $this->setId($GLOBALS['DB']->lastInsertId());
+        $statement_handle->bindValue(':author_name', $this->getAuthorName(), PDO::PARAM_STR);
+        $statement_handle->execute();
+        $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
     static function getSome($search_selector, $search_argument = '')
@@ -82,7 +87,7 @@
           $statement_handle = $GLOBALS['DB']->prepare(
               "DELETE FROM authors WHERE author_name = :search_argument;"
           );
-          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+          $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
       }
       if ($search_selector == 'all') {
           $statement_handle = $GLOBALS['DB']->prepare("DELETE FROM authors;");
@@ -94,9 +99,14 @@
 
     function updateAuthorName($new_author_name)
     {
-      $GLOBALS['DB']->exec("UPDATE authors SET author_name = '{$new_author_name}' WHERE id = {$this->getId()};");
-      $this->setAuthorName($new_author_name);
+        $this->setAuthorName($new_author_name);
+        $statement_handle = $GLOBALS['DB']->prepare("UPDATE authors SET author_name = :new_author_name WHERE id = :id ;");
+        $statement_handle->bindValue(':new_author_name', $this->getAuthorName(), PDO::PARAM_STR);
+        $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_STR);
+        $statement_handle->execute();
     }
   }
 
  ?>
+ '{$new_author_name}'
+{$this->getId()}
