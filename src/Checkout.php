@@ -122,33 +122,34 @@
 
         function update($book_copy_id, $patron_id, $checkout_date, $due_date, $returned_date, $comment, $still_out)
         {
-            // $this->setBookCopyId($book_copy_id);
-            // $this->setPatronId($patron_id);
-            // $this->setCheckoutDate($checkout_date);
-            // $this->setDueDate($due_date);
-            // $this->setReturnedDate($returned_date);
-            // $this->setComment($comment);
-            // $this->setStillOut($still_out);
-            //
-            // $statement_handle = $GLOBALS['DB']->prepare(
-            //     "UPDATE checkouts SET
-            //         book_copy_id :book_copy_id,
-            //         patron_id = :patron_id,
-            //         checkout_date = :checkout_date,
-            //         due_date = :due_date,
-            //         returned_date = :returned_date,
-            //         comment = :comment,
-            //         still_out = :still_out)
-            //     WHERE id = :id ;"
-            // );
-            // $statement_handle->bindValue(':book_copy_id', $this->getBookCopyId(), PDO::PARAM_INT);
-            // $statement_handle->bindValue(':patron_id', $this->getPatronId(), PDO::PARAM_INT);
-            // $statement_handle->bindValue(':checkout_date', $this->getCheckoutDate());
-            // $statement_handle->bindValue(':due_date', $this->getDueDate());
-            // $statement_handle->bindValue(':returned_date', $this->getReturnedDate());
-            // $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
-            // $statement_handle->bindValue(':still_out', $this->getStillOut(), PDO::PARAM_INT);
-            // $statement_handle->execute();
+            $this->setBookCopyId($book_copy_id);
+            $this->setPatronId($patron_id);
+            $this->setCheckoutDate($checkout_date);
+            $this->setDueDate($due_date);
+            $this->setReturnedDate($returned_date);
+            $this->setComment($comment);
+            $this->setStillOut($still_out);
+
+            $statement_handle = $GLOBALS['DB']->prepare(
+                "UPDATE checkouts SET
+                    book_copy_id = :book_copy_id,
+                    patron_id = :patron_id,
+                    checkout_date = :checkout_date,
+                    due_date = :due_date,
+                    returned_date = :returned_date,
+                    comment = :comment,
+                    still_out = :still_out
+                WHERE id = :id ;"
+            );
+            $statement_handle->bindValue(':book_copy_id', $this->getBookCopyId(), PDO::PARAM_INT);
+            $statement_handle->bindValue(':patron_id', $this->getPatronId(), PDO::PARAM_INT);
+            $statement_handle->bindValue(':checkout_date', $this->getCheckoutDate());
+            $statement_handle->bindValue(':due_date', $this->getDueDate());
+            $statement_handle->bindValue(':returned_date', $this->getReturnedDate());
+            $statement_handle->bindValue(':comment', $this->getComment(), PDO::PARAM_STR);
+            $statement_handle->bindValue(':still_out', $this->getStillOut(), PDO::PARAM_INT);
+            $statement_handle->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+            $statement_handle->execute();
         }
 
         static function getSome($search_selector, $search_argument = '')
