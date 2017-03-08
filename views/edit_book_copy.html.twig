@@ -22,4 +22,8 @@
 
         <button type="submit" class='btn btn-success'>Update</button>
     </form>
+    <form action="/delete_book_copy/{{copy.getId}}" method="post">
+        <input name="_method" type="hidden" value="delete">
+        <button type="submit" name="button" class="btn btn-danger">Delete Copy</button>
+    </form>
 {% endblock %}
