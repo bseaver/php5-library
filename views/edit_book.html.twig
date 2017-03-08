@@ -1,0 +1,35 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <h2>Edit {{book.getTitle}}</h2>
+    <div class='row'>
+        <div class='col-md-6'>
+            <form action="/add_author" method="post">
+                <input type="hidden" name="book_id" value={{book.getId}}>
+                <label for="add_author">Add author</label>
+                <input type="text" name="add_author" value="">
+                <button type="submit" class='btn btn-success'>Add</button>
+            </form>
+            <form action="/update_book" method="post">
+                <input name="_method" type="hidden" value="patch">
+                <input type="hidden" name="book_id" value={{book.getId}}>
+
+                <label for="update_title">Change Title</label>
+                <input type="text" name="update_title" id="update_title" value='{{book.getTitle}}'>
+
+                <label for="update_synopsis">Change Synopsis</label>
+                <input type="text" name="update_synopsis" id="update_synopsis" value='{{book.getSynopsis}}'>
+
+                <button type="submit" class='btn btn-success'>Update</button>
+            </form>
+            <form action="/update_book" method="post"></form>
+        </div>
+        <div class='col-md-6'>
+            <select class="" name="">
+                {% for copy in copies %}
+                    <option value='{{ copy.getId }}'>
+                        <p>serial number = {{ copy.getId }}</p>
+                {% endfor %}
+            </select>
+    </div>
+{% endblock %}

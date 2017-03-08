@@ -5,7 +5,7 @@
         private $book_id;
         private $book_condition;
         private $comment;
-
+        //book_condition is a scale from 0-5 where 5 is brand new and 0 is missing/not useable
 
         function __construct($book_id = null, $book_condition = 0, $comment = '', $id = null)
         {
@@ -22,7 +22,7 @@
 
         function setBookCondition($book_condition)
         {
-            $this->book_condition = (string) $book_condition;
+            $this->book_condition = (int) $book_condition;
         }
 
         function setComment($comment)
@@ -95,6 +95,12 @@
             if ($search_selector == 'id') {
                 $statement_handle = $GLOBALS['DB']->prepare(
                     "SELECT * FROM book_copies WHERE id = :search_argument;"
+                );
+                $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+            }
+            if ($search_selector == 'book_id') {
+                $statement_handle = $GLOBALS['DB']->prepare(
+                    "SELECT * FROM book_copies WHERE book_id = :search_argument;"
                 );
                 $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
             }

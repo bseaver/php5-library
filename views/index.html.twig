@@ -1,0 +1,27 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <h1>Welcome to the Library</h1>
+    <h3>Please select the view you want</h3>
+    <div class="row">
+        <div class="col-xs-1">
+            <label for="librarian">Librarian</label>
+        </div>
+        <div class="col-xs-1">
+            <a href="/librarian_view">
+                <button type="button" name="librarian" class="btn btn-success">Go</button>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1">
+            <label for="patron">Patron</label>
+        </div>
+        <div class="col-xs-1">
+            <a href="/patron_view">
+                <button type="button" name="patron" class="btn btn-success">Go</button>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
