@@ -59,7 +59,6 @@
 
     $app->get("/book/{id}", function($id) use ($app){
         $copies = BookCopy::getSome('all');
-        var_dump($copies);
         $book = Book::getSome('id', $id);
         return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies));
     });
