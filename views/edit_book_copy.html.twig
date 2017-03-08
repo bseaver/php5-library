@@ -1,0 +1,25 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <h2>Edit book copy</h2>
+    <form action="/update_book_copy/{{copy.getId}}" method="post">
+        <input name="_method" type="hidden" value="patch">
+        <input type="hidden" name="copy_id" value={{copy.getId}}>
+
+        <label for="update_condition">Edit condition</label>
+
+        <select class="" name="update_condition">
+            <option value='0' {% if 0 == copy.getBookCondition %}selected{% endif %}>0 - missing
+            <option value='1'{% if 1 == copy.getBookCondition %}selected{% endif %}>1 - very poor
+            <option value='2' {% if 2 == copy.getBookCondition %}selected{% endif %}>2 - poor
+            <option value='3' {% if 3 == copy.getBookCondition %}selected{% endif %}>3 - fair
+            <option value='4' {% if 4 == copy.getBookCondition %}selected{% endif %}>4 - good
+            <option value='5'{% if 5 == copy.getBookCondition %}selected{% endif %}>5 - new
+        </select>
+
+        <label for="update_comments">Change comments</label>
+        <input type="text" name="update_comments" id="update_comments" value='{{copy.getComment}}'>
+
+        <button type="submit" class='btn btn-success'>Update</button>
+    </form>
+{% endblock %}
