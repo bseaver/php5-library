@@ -39,7 +39,7 @@
         $publish_date = $_POST['publish_date'];
         $synopsis = $_POST['synopsis'];
         $author_name = $_POST['author_name'];
-        $book_copies = $_POST['number_of_copies'];
+        $book_copies = (int)$_POST['copies'];
         $author = AppHelperFunctions::getOrCreateAuthor($author_name);
         $author_id = $author->getId();
         $new_book = new Book($book_title, $publish_date, $synopsis);
@@ -50,16 +50,15 @@
 
         for ($i = 0; $i < $book_copies; $i ++) {
             $new_book_copy = new BookCopy($new_book_id, 5, 'new');
-            $new_book_copy->save();
             var_dump($new_book_copy);
-
+            $new_book_copy->save();
         }
 
         return $app->redirect("/librarian_view");
     });
 
     $app->get("/book/{id}", function($id) use ($app){
-        $copies = BookCopy::getSome('book_id', $id);
+        $copies = BookCopy::getSome('all');
         var_dump($copies);
         $book = Book::getSome('id', $id);
         return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies));
@@ -87,6 +86,20 @@
         return $app->redirect('/librarian_view');
     });
 
+    $app->get("/edit_book_copy/{id}", function($id) use ($app) {
+        $copy = BookCopy::getSome('id', $id);
+        return $app['twig']->render('edit_book_copy.html.twig', array('copy' => $copy[0]));
+    });
+
+    $app->patch("/update_book_copy/{id}", function($id) use ($app) {
+        $book = Book::getSome('id', $id);
+        $new_condition = $_POST['update_condition'];
+        $new_comments = $_POST['update_comments'];
+        $new_book_copy = BookCopy::getSome('id', $id);
+        $book_id = $new_book_copy[0]->getBookId();
+        $new_book_copy[0]->update($book_id, $new_condition, $new_comments);
+        return $app->redirect('/book/'.$book_id);
+    });
 
     return $app;
  ?>

@@ -106,6 +106,7 @@
             }
 
             if ($search_selector == 'all') {
+                var_dump('test');
                 $statement_handle = $GLOBALS['DB']->prepare(
                     "SELECT * FROM book_copies ORDER BY book_id, id;"
                 );

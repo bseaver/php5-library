@@ -1,7 +1,8 @@
 {% extends 'template.html.twig' %}
 
 {% block body %}
-    <h2>Edit {{book.getTitle}}</h2>
+    <h2>Edit
+        {{book.getTitle}}</h2>
     <div class='row'>
         <div class='col-md-6'>
             <form action="/add_author" method="post">
@@ -25,11 +26,10 @@
             <form action="/update_book" method="post"></form>
         </div>
         <div class='col-md-6'>
-            <select class="" name="">
+            <ul>
+                <h2>Copies of {{book.getTitle}}</h2>
                 {% for copy in copies %}
-                    <option value='{{ copy.getId }}'>
-                        <p>serial number = {{ copy.getId }}</p>
+                    <li><a href="/edit_book_copy/{{copy.getId}}">Serial Code:{{copy.getId}}</a></li>
                 {% endfor %}
-            </select>
-    </div>
-{% endblock %}
+            </ul>
+        {% endblock %}
