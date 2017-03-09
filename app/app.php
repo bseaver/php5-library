@@ -238,9 +238,37 @@
         $patrons = array();
         foreach ($checkouts as $checkout) {
             $patron = Patron::getSome('id', $checkout->getPatronId());
-            array_push($patrons, $patron);
+            if (!in_array($patron, $patrons)) {
+                array_push($patrons, $patron);
+            }
         }
         return $app['twig']->render('librarian_checkout.html.twig', array('patrons' => $patrons));
+    });
+
+    $app->get("/patron_books/{id}", function($id) use ($app) {
+        $patron = Patron::getSome('id', $id);
+        $checkouts = Checkout::getSome('patron_id', $id);
+        $book_copies = array();
+        $books = array();
+        $over_due = array();
+        foreach ($checkouts as $checkout) {
+            if ($checkout->getStillOut()) {
+                $book_copy = BookCopy::getSome('id', $checkout->getBookCopyId());
+                $book = Book::getSome('id', $book_copy[0]->getBookId());
+                array_push($books, $book);
+                array_push($over_due, array('book' => $book[0], 'checkout' => $checkout));
+            }
+        }
+
+        return $app['twig']->render(
+            'patron_books.html.twig',
+            array(
+                'patron' => $patron,
+                'books' => $books,
+                'checkouts' => $checkouts,
+                'over_due' => $over_due
+            )
+        );
     });
 
     return $app;

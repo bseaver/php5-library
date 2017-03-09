@@ -3,6 +3,6 @@
 {% block body %}
     <h3>Checkouts</h3>
     {% for patron in patrons %}
-        <li><a href="">{{patron[0].getPatronName}}</a></li>
+        <li><a href="/patron_books/{{patron[0].getId}}">{{patron[0].getPatronName}}</a></li>
     {% endfor %}
 {% endblock %}

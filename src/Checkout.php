@@ -163,6 +163,13 @@
                 $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
             }
 
+            if ($search_selector == 'patron_id') {
+                $statement_handle = $GLOBALS['DB']->prepare(
+                    "SELECT * FROM checkouts WHERE patron_id = :search_argument;"
+                );
+                $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_INT);
+            }
+
             if ($search_selector == 'all') {
                 $statement_handle = $GLOBALS['DB']->prepare(
                     "SELECT * FROM checkouts ORDER BY book_copy_id, id;"
