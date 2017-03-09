@@ -3,6 +3,7 @@
 {% block body %}
     <h2>Edit
         {{book.getTitle}}</h2>
+        <a href="/librarian_view">Back</a>
     <div class='row'>
         <div class='col-md-6'>
             <form action="/add_author" method="post">
@@ -23,7 +24,10 @@
 
                 <button type="submit" class='btn btn-success'>Update</button>
             </form>
-            <form action="/update_book" method="post"></form>
+            <form action="/delete_book/{{book.getId}}" method="post">
+                <input name="_method" type="hidden" value="delete">
+                <button type="submit" name="button" class="btn btn-danger">Delete Book</button>
+            </form>
         </div>
         <div class='col-md-6'>
             <ul>

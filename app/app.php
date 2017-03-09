@@ -50,15 +50,13 @@
 
         for ($i = 0; $i < $book_copies; $i ++) {
             $new_book_copy = new BookCopy($new_book_id, 5, 'new');
-            var_dump($new_book_copy);
             $new_book_copy->save();
         }
-
         return $app->redirect("/librarian_view");
     });
 
     $app->get("/book/{id}", function($id) use ($app){
-        $copies = BookCopy::getSome('all');
+        $copies = BookCopy::getSome('book_id', $id);
         $book = Book::getSome('id', $id);
         return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies));
     });
@@ -82,6 +80,14 @@
         $new_book[0]->updateTitle($new_title);
         $new_book[0]->updateSynopsis($new_synopsis);
 
+        return $app->redirect('/librarian_view');
+    });
+
+    $app->delete("/delete_book/{id}", function($id) use ($app) {
+        Book::deleteSome('id', $id);
+        AuthorBook::deleteSome('book_id', $id);
+        BookCopy::deleteSome('book_id', $id);
+        //Delete from checkout when implemented
         return $app->redirect('/librarian_view');
     });
 
@@ -135,6 +141,13 @@
             array_push($books_data, $item);
         }
         return $app['twig']->render("title_search.html.twig", array('books' => $books_data));
+    });
+
+    $app->delete("/delete_book_copy/{id}", function($id) use ($app) {
+        $new_book_copy = BookCopy::getSome('id', $id);
+        $book_id = $new_book_copy[0]->getBookId();
+        BookCopy::deleteSome('id', $id);
+        return $app->redirect('/book/'.$book_id);
     });
 
     return $app;
