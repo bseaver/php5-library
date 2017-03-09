@@ -58,7 +58,15 @@
     $app->get("/book/{id}", function($id) use ($app){
         $copies = BookCopy::getSome('book_id', $id);
         $book = Book::getSome('id', $id);
-        return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies));
+        $book_id = $book[0]->getId();
+        $author_books = AuthorBook::getSome('book_id', $book_id);
+        $authors = array();
+        foreach ($author_books as $author_book){
+            $author_id = $author_book->getAuthorId();
+            $author = Author::getSome('id', $author_id);
+            array_push($authors, $author[0]);
+        }
+        return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies, 'authors' => $authors));
     });
 
     $app->post("/add_author", function() use ($app) {
