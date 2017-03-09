@@ -221,5 +221,27 @@
         return $app->redirect('/book/'.$book_id);
     });
 
+    $app->post("/patron_checkout", function() use ($app) {
+        $patron_id = $_POST['patron_id'];
+        $book_copy_id = $_POST['book_copy_id'];
+        $checkout_date = '2017-03-09';
+        $due_date = '2017-03-23';
+        $still_out = 1;
+        $returned_date = '';
+        $comment = '';
+        $new_checkout = new Checkout($book_copy_id, $patron_id, $checkout_date, $due_date, $returned_date, $comment, $still_out);
+        return $app->redirect('/patron_login');
+    });
+
+    $app->get("/librarian_checkout", function() use ($app) {
+        $checkouts = Checkout::getSome('all');
+        $patrons = array();
+        foreach ($checkouts as $checkout) {
+            $patron = Patron::getSome('id', $checkout->getPatronId());
+            array_push($patrons, $patron);
+        }
+        return $app['twig']->render('librarian_checkout.html.twig', array('patrons' => $patrons));
+    });
+
     return $app;
  ?>
