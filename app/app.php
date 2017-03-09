@@ -100,5 +100,42 @@
         return $app->redirect('/book/'.$book_id);
     });
 
+    $app->get("/patron_view", function() use ($app) {
+        return $app['twig']->render("patron.html.twig");
+    });
+
+    $app->post("/patron_login", function() use ($app) {
+        $username = $_POST['username'];
+        $patron = Patron::getSome('patron_name', $username);
+        if (empty($patron)) {
+            return $app->redirect("/patron_view");
+        } else {
+            return $app['twig']->render("patron_login.html.twig", array('patron' => $patron[0]));
+        }
+    });
+
+    $app->post("/title_search", function() use ($app) {
+        $title = $_POST['title'];
+        $books = Book::getSome('title_search', $title);
+        $books_data = [];
+        foreach ($books as $book) {
+            $author_books = AuthorBook::getSome('book_id', $book->getId());
+            $author_list = '';
+            foreach ($author_books as  $author_book) {
+                $authors = Author::getSome('id',$author_book->getId());
+                $author_list .= ($author_list?' / ':'') . $authors[0]->getAuthorName();
+            }
+            $item = array(
+                'getTitle' => $book->getTitle(),
+                'getSynopsis' => $book->getSynopsis(),
+                'getId' => $book->getId(),
+                'getPublishDate' => $book->getPublishDate(),
+                'author_list' => $author_list
+            );
+            array_push($books_data, $item);
+        }
+        return $app['twig']->render("title_search.html.twig", array('books' => $books_data));
+    });
+
     return $app;
  ?>

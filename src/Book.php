@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__."/../src/AuthorBook.php";
+
   class Book
   {
     private $title;
@@ -71,6 +73,13 @@
     if ($search_selector == 'title') {
       $statement_handle = $GLOBALS['DB']->prepare(
           "SELECT * FROM books WHERE title = :search_argument ORDER BY title, id;"
+      );
+      $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+    }
+    if ($search_selector == 'title_search') {
+        $search_argument = "%$search_argument%";
+      $statement_handle = $GLOBALS['DB']->prepare(
+          "SELECT * FROM books WHERE title LIKE :search_argument ORDER BY title, id;"
       );
       $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
     }

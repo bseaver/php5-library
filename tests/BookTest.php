@@ -90,6 +90,25 @@ class BookTest extends PHPUnit_Framework_TestCase
       $this->assertEquals([$book3], $result);
     }
 
+    function test_title_search()
+    {
+      //Arrange
+      $publish_date = "2013-11-11";
+      $synopsis = "It has words";
+      $book1 = new Book("Book 1", $publish_date, $synopsis);
+      $book2 = new Book("Book 2", $publish_date, $synopsis);
+      $book3 = new Book("Cookster 3", $publish_date, $synopsis);
+      $book1->save();
+      $book2->save();
+      $book3->save();
+
+      //Act
+      $result = Book::getSome('title_search', 'book');
+
+      //Assest
+      $this->assertEquals([$book1, $book2], $result);
+    }
+
     function test_updateTitle()
     {
         $publish_date = "2013-11-11";
