@@ -1,0 +1,29 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+<h2>Search Results</h2>
+
+<div class="row">
+    <div class='col-md-6'>
+        {% if authors is not empty %}
+            {% for author in authors %}
+            <table class="table table-striped">
+                <thead>
+                    <th>
+                        <a href=''>{{ author.getAuthorName }}</a>
+                    </th>
+                </thead>
+                <tbody>
+                    <td>
+                        <p>
+                            Book list: {{ author.book_list }}
+                        </p>
+                    </td>
+                </tbody>
+            </table>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
