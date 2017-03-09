@@ -120,27 +120,82 @@
         }
     });
 
-    $app->post("/title_search", function() use ($app) {
-        $title = $_POST['title'];
-        $books = Book::getSome('title_search', $title);
+    $app->post("/patron/book/search", function() use ($app) {
+        $patron = Patron::getSome('id', $_POST['patron_id'])[0];
+
+        if (array_key_exists('title', $_POST)) {
+            $title = $_POST['title'];
+            $books = Book::getSome('title_search', $title);
+        }
+
+        if (array_key_exists('author_name', $_POST)) {
+            $books = array();
+            $author_name = $_POST['author_name'];
+            $authors = Author::getSome('author_search', $author_name);
+            foreach ($authors as $author) {
+                $author_books = AuthorBook::getSome('author_id', $author->getId());
+                foreach ($author_books as  $author_book) {
+                    $book_by_author = Book::getSome('id',$author_book->getBookId())[0];
+                    foreach ($books as $book) {
+                        if ($book->getId() == $book_by_author->getId()) {
+                            $book_by_author = null;
+                            break;
+                        }
+                    }
+                    if ($book_by_author) {
+                        array_push($books, $book_by_author);
+                    }
+                }
+            }
+        }
+
         $books_data = [];
         foreach ($books as $book) {
+            $book_id = $book->getId();
             $author_books = AuthorBook::getSome('book_id', $book->getId());
             $author_list = '';
             foreach ($author_books as  $author_book) {
                 $authors = Author::getSome('id',$author_book->getAuthorId());
-                $author_list .= ($author_list?' / ':'') . $authors[0]->getAuthorName();
+                $author_list .= ($author_list?'<br>':'') . $authors[0]->getAuthorName();
             }
+
+            $checkouts = Checkout::getSome('all');
+            $book_copies = BookCopy::getSome('book_id', $book->getId());
+
+            $book_copy_count = count($book_copies);
+            $book_copy_id = 0;
+            foreach ($book_copies as $book_copy) {
+                if ($book_copy->getBookId() == $book_id && $book_copy->getBookCondition() > 0) {
+                    $book_copy_id = $book_copy->getId();
+                    foreach ($checkouts as $checkout) {
+                        if ($checkout->getBookCopyId() == $book_copy_id && $checkout->getStillOut()) {
+                            $book_copy_id = 0;
+                            break;
+                        }
+                    }
+                    if ($book_copy_id) {
+                        break;
+                    }
+                }
+            }
+
             $item = array(
                 'getTitle' => $book->getTitle(),
                 'getSynopsis' => $book->getSynopsis(),
                 'getId' => $book->getId(),
                 'getPublishDate' => $book->getPublishDate(),
-                'author_list' => $author_list
+                'author_list' => $author_list,
+                'copy_count' => $book_copy_count,
+                'available_book_copy_id' => $book_copy_id
             );
             array_push($books_data, $item);
         }
-        return $app['twig']->render("title_search.html.twig", array('books' => $books_data));
+        return $app['twig']->render("patron_title_search.html.twig",
+            array(
+                'books' => $books_data,
+                'patron' => $patron
+            )
+        );
     });
 
     $app->post("/librarian_title_search", function() use ($app) {
@@ -167,6 +222,7 @@
     });
 
     $app->post("/author_search", function() use ($app) {
+        $patron = Patron::getSome('id', $_POST['patron_id'])[0];
         $author_name = $_POST['author_name'];
         $authors = Author::getSome('author_search', $author_name);
         $authors_data = [];
@@ -183,7 +239,12 @@
             );
             array_push($authors_data, $item);
         }
-        return $app['twig']->render("author_search.html.twig", array('authors' => $authors_data));
+        return $app['twig']->render("patron_author_search.html.twig",
+            array(
+                'authors' => $authors_data,
+                'patron' => $patron
+            )
+        );
     });
 
     $app->post("/librarian_author_search", function() use ($app) {

@@ -1,0 +1,76 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+<h2>{{ patron.getPatronName }}</h2>
+<h3>Search Results</h3>
+
+{% if books is not empty %}
+<table class="table table-striped">
+    <thead>
+        <th>
+            Book
+        </th>
+        <th>
+            Authors
+        </th>
+        <th>
+            Published
+        </th>
+        <th>
+            Synopsis
+        </th>
+        <th>
+            Copies
+        </th>
+        <th>
+            Available
+        </th>
+        <th>
+            Checkout
+        </th>
+    </thead>
+    {% for book in books %}
+        <tbody>
+            <tr>
+                <td>
+                    {{ book.getTitle }}
+                </td>
+                <td>
+                    {{ book.author_list | raw}}
+                </td>
+                <td>
+                    {{ book.getPublishDate }}
+                </td>
+                <td>
+                    {{ book.getSynopsis }}
+                </td>
+                <td>
+                    {{ book.copy_count }}
+                </td>
+                <td>
+                    {% if book.available_book_copy_id %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="/patron/checkout" method="post">
+                        <input type='text' name='patron_id' value='{{ patron.getId }}' hidden>
+                        <input type='text' name='book_copy_id' value='{{ book.available_book_copy_id }}' hidden>
+                        <button type="submit" class="btn btn-success"
+                            {% if not book.available_book_copy_id %}
+                                disabled="disabled"
+                            {% endif %}
+                        >
+                            Checkout
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
