@@ -55,6 +55,13 @@
           );
           $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
       }
+      if ($search_selector == 'author_search') {
+          $search_argument = "%$search_argument%";
+        $statement_handle = $GLOBALS['DB']->prepare(
+            "SELECT * FROM authors WHERE author_name LIKE :search_argument ORDER BY author_name, id;"
+        );
+        $statement_handle->bindValue(':search_argument', $search_argument, PDO::PARAM_STR);
+      }
       if ($search_selector == 'all') {
           $statement_handle = $GLOBALS['DB']->prepare("SELECT * FROM authors ORDER BY id;");
       }

@@ -128,7 +128,7 @@
             $author_books = AuthorBook::getSome('book_id', $book->getId());
             $author_list = '';
             foreach ($author_books as  $author_book) {
-                $authors = Author::getSome('id',$author_book->getId());
+                $authors = Author::getSome('id',$author_book->getAuthorId());
                 $author_list .= ($author_list?' / ':'') . $authors[0]->getAuthorName();
             }
             $item = array(
@@ -141,6 +141,69 @@
             array_push($books_data, $item);
         }
         return $app['twig']->render("title_search.html.twig", array('books' => $books_data));
+    });
+
+    $app->post("/librarian_title_search", function() use ($app) {
+        $title = $_POST['title'];
+        $books = Book::getSome('title_search', $title);
+        $books_data = [];
+        foreach ($books as $book) {
+            $author_books = AuthorBook::getSome('book_id', $book->getId());
+            $author_list = '';
+            foreach ($author_books as  $author_book) {
+                $authors = Author::getSome('id',$author_book->getAuthorId());
+                $author_list .= ($author_list?' / ':'') . $authors[0]->getAuthorName();
+            }
+            $item = array(
+                'getTitle' => $book->getTitle(),
+                'getSynopsis' => $book->getSynopsis(),
+                'getId' => $book->getId(),
+                'getPublishDate' => $book->getPublishDate(),
+                'author_list' => $author_list
+            );
+            array_push($books_data, $item);
+        }
+        return $app['twig']->render("librarian_title_search.html.twig", array('books' => $books_data));
+    });
+
+    $app->post("/author_search", function() use ($app) {
+        $author_name = $_POST['author_name'];
+        $authors = Author::getSome('author_search', $author_name);
+        $authors_data = [];
+        foreach ($authors as $author) {
+            $author_books = AuthorBook::getSome('author_id', $author->getId());
+            $book_list = '';
+            foreach ($author_books as  $author_book) {
+                $books = Book::getSome('id',$author_book->getBookId());
+                $book_list .= ($book_list?' / ':'') . $books[0]->getTitle();
+            }
+            $item = array(
+                'getAuthorName' => $author->getAuthorName(),
+                'book_list' => $book_list
+            );
+            array_push($authors_data, $item);
+        }
+        return $app['twig']->render("author_search.html.twig", array('authors' => $authors_data));
+    });
+
+    $app->post("/librarian_author_search", function() use ($app) {
+        $author_name = $_POST['author_name'];
+        $authors = Author::getSome('author_search', $author_name);
+        $authors_data = [];
+        foreach ($authors as $author) {
+            $author_books = AuthorBook::getSome('author_id', $author->getId());
+            $book_list = '';
+            foreach ($author_books as  $author_book) {
+                $books = Book::getSome('id',$author_book->getBookId());
+                $book_list .= ($book_list?' / ':'') . $books[0]->getTitle();
+            }
+            $item = array(
+                'getAuthorName' => $author->getAuthorName(),
+                'book_list' => $book_list
+            );
+            array_push($authors_data, $item);
+        }
+        return $app['twig']->render("librarian_author_search.html.twig", array('authors' => $authors_data));
     });
 
     $app->delete("/delete_book_copy/{id}", function($id) use ($app) {
