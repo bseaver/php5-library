@@ -1,0 +1,35 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+<h2>Search Results</h2>
+
+<div class="row">
+    <div class='col-md-6'>
+        {% if books is not empty %}
+            {% for book in books %}
+            <table class="table table-striped">
+                <thead>
+                    <th>
+                        <a href=''>{{ book.getTitle }}</a>
+                    </th>
+                </thead>
+                <tbody>
+                    <td>
+                        <p>
+                            Synopsis: {{ book.getSynopsis }}
+                        </p>
+                        <p>
+                            Publish Date: {{ book.getPublishDate }}
+                        </p>
+                        <p>
+                            Author List: {{ book.author_list }}
+                        </p>
+                    </td>
+                </tbody>
+            </table>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,12 +1,19 @@
 {% extends 'template.html.twig' %}
 
 {% block body %}
-    <h2>Welcome Patron</h2>
+<h2>Welcome Patron</h2>
+<h3>Please log in</h3>
 
-    <form class="" action="/patron_login" method="post">
-        <div class="form-group-row">
-            <label for="login">Please enter your name:</label>
-            <input type="button" name="login" value="">
-        </div>
-    </form>
+<form action="/patron_login" method="post">
+    <div class='form-group row'>
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="" required>
+    </div>
+    <!-- <div class='form-group row'>
+        <label for="password">Password:</label>
+        <input type="number" name="password" value="" required>
+    </div> -->
+
+    <button type="submit">Login</button>
+</form>
 {% endblock %}
