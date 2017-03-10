@@ -58,7 +58,15 @@
     $app->get("/book/{id}", function($id) use ($app){
         $copies = BookCopy::getSome('book_id', $id);
         $book = Book::getSome('id', $id);
-        return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies));
+        $book_id = $book[0]->getId();
+        $author_books = AuthorBook::getSome('book_id', $book_id);
+        $authors = array();
+        foreach ($author_books as $author_book){
+            $author_id = $author_book->getAuthorId();
+            $author = Author::getSome('id', $author_id);
+            array_push($authors, $author[0]);
+        }
+        return $app['twig']->render('edit_book.html.twig', array('book' => $book[0], 'copies' => $copies, 'authors' => $authors));
     });
 
     $app->post("/add_author", function() use ($app) {
@@ -272,6 +280,61 @@
         $book_id = $new_book_copy[0]->getBookId();
         BookCopy::deleteSome('id', $id);
         return $app->redirect('/book/'.$book_id);
+    });
+
+    $app->post("/patron/checkout", function() use ($app) {
+        $patron_id = $_POST['patron_id'];
+        $patron = Patron::getSome('id', $patron_id);
+        $book_copy_id = $_POST['book_copy_id'];
+        $checkout_date = '2017-03-09';
+        $due_date = '2017-03-23';
+        $still_out = 1;
+        $returned_date = '';
+        $comment = '';
+        $new_checkout = new Checkout($book_copy_id, $patron_id, $checkout_date, $due_date, $returned_date, $comment, $still_out);
+        $new_checkout->save();
+        return $app['twig']->render("patron_login.html.twig",
+            array('patron' => $patron[0])
+        );
+    });
+
+    $app->get("/librarian_checkout", function() use ($app) {
+        $checkouts = Checkout::getSome('all');
+        $patrons = array();
+        foreach ($checkouts as $checkout) {
+            $patron = Patron::getSome('id', $checkout->getPatronId());
+            if (!in_array($patron, $patrons)) {
+                array_push($patrons, $patron);
+            }
+        }
+        return $app['twig']->render('librarian_checkout.html.twig', array('patrons' => $patrons));
+    });
+
+    $app->get("/patron_books/{id}", function($id) use ($app) {
+        $patron = Patron::getSome('id', $id);
+        $checkouts = Checkout::getSome('patron_id', $id);
+        $book_copies = array();
+        $books = array();
+        $over_due = array();
+        foreach ($checkouts as $checkout) {
+            if ($checkout->getStillOut()) {
+                $book_copy = BookCopy::getSome('id', $checkout->getBookCopyId());
+                $book = Book::getSome('id', $book_copy[0]->getBookId());
+
+                array_push($books, $book);
+                array_push($over_due, array('book' => $book[0], 'checkout' => $checkout));
+            }
+        }
+
+        return $app['twig']->render(
+            'patron_books.html.twig',
+            array(
+                'patron' => $patron,
+                'books' => $books,
+                'checkouts' => $checkouts,
+                'over_due' => $over_due
+            )
+        );
     });
 
     return $app;

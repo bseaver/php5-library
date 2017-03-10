@@ -3,7 +3,10 @@
 {% block body %}
     <h2>Edit
         {{book.getTitle}}</h2>
-        <a href="/librarian_view">Back</a>
+        <h4>By:</h4>
+        {% for author in authors %}
+            <h5>{{ author.getAuthorName }}</h5>
+        {% endfor %}<br><br><br>
     <div class='row'>
         <div class='col-md-6'>
             <form action="/add_author" method="post">
@@ -11,29 +14,32 @@
                 <label for="add_author">Add author</label>
                 <input type="text" name="add_author" value="">
                 <button type="submit" class='btn btn-success'>Add</button>
-            </form>
+            </form><br>
             <form action="/update_book" method="post">
                 <input name="_method" type="hidden" value="patch">
                 <input type="hidden" name="book_id" value={{book.getId}}>
 
                 <label for="update_title">Change Title</label>
-                <input type="text" name="update_title" id="update_title" value='{{book.getTitle}}'>
+                <input type="text" name="update_title" id="update_title" value='{{book.getTitle}}'><br>
 
                 <label for="update_synopsis">Change Synopsis</label>
-                <input type="text" name="update_synopsis" id="update_synopsis" value='{{book.getSynopsis}}'>
+                <input type="text" name="update_synopsis" id="update_synopsis" value='{{book.getSynopsis}}'><br>
 
                 <button type="submit" class='btn btn-success'>Update</button>
-            </form>
+            </form><br>
             <form action="/delete_book/{{book.getId}}" method="post">
                 <input name="_method" type="hidden" value="delete">
                 <button type="submit" name="button" class="btn btn-danger">Delete Book</button>
             </form>
+            <a href="/librarian_view">Back</a>
         </div>
         <div class='col-md-6'>
             <ul>
                 <h2>Copies of {{book.getTitle}}</h2>
                 {% for copy in copies %}
-                    <li><a href="/edit_book_copy/{{copy.getId}}">Serial Code:{{copy.getId}}</a></li>
+                <li><a href="/edit_book_copy/{{copy.getId}}">Serial Code:{{copy.getId}}</a></li>
                 {% endfor %}
             </ul>
-        {% endblock %}
+        </div>
+    </div>
+{% endblock %}
