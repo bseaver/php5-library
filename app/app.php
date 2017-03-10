@@ -282,8 +282,9 @@
         return $app->redirect('/book/'.$book_id);
     });
 
-    $app->post("/patron_checkout", function() use ($app) {
+    $app->post("/patron/checkout", function() use ($app) {
         $patron_id = $_POST['patron_id'];
+        $patron = Patron::getSome('id', $patron_id);
         $book_copy_id = $_POST['book_copy_id'];
         $checkout_date = '2017-03-09';
         $due_date = '2017-03-23';
@@ -291,7 +292,10 @@
         $returned_date = '';
         $comment = '';
         $new_checkout = new Checkout($book_copy_id, $patron_id, $checkout_date, $due_date, $returned_date, $comment, $still_out);
-        return $app->redirect('/patron_login');
+        $new_checkout->save();
+        return $app['twig']->render("patron_login.html.twig",
+            array('patron' => $patron[0])
+        );
     });
 
     $app->get("/librarian_checkout", function() use ($app) {
@@ -316,6 +320,7 @@
             if ($checkout->getStillOut()) {
                 $book_copy = BookCopy::getSome('id', $checkout->getBookCopyId());
                 $book = Book::getSome('id', $book_copy[0]->getBookId());
+
                 array_push($books, $book);
                 array_push($over_due, array('book' => $book[0], 'checkout' => $checkout));
             }

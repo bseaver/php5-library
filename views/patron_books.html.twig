@@ -3,6 +3,6 @@
 {% block body %}
     <h3>Books checked out by {{ patron[0].getPatronName }}</h3>
     {% for over_due_book in over_due %}
-        <li>{{ over_due[0]['book'].getTitle }} &nbsp; &nbsp; Due: {{ over_due[0]['checkout'].getDueDate }}</li>
+        <li>{{ over_due_book['book'].getTitle }} &nbsp; &nbsp; Due: {{ over_due_book['checkout'].getDueDate }}</li>
     {% endfor %}
 {% endblock %}
